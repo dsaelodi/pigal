@@ -1,0 +1,50 @@
+[
+  {
+    "case_id": "CASE-001",
+    "company_name": "PT Aman Sejahtera Digital",
+    "website": "https://example.com",
+    "bank_account": "MOCK-123456",
+    "sales_chat": "Investasi aman, return 5% per tahun.",
+    "expected_risk": "low"
+  },
+  {
+    "case_id": "CASE-002",
+    "company_name": "PT Cepat Kaya Indonesia",
+    "website": "https://example-scam.com",
+    "bank_account": "MOCK-987654",
+    "sales_chat": "Transfer sekarang dan dapat profit 50% dalam 7 hari.",
+    "expected_risk": "high"
+  },
+  {
+    "case_id": "CASE-003",
+    "company_name": "PT Investasi Nusantara",
+    "website": "https://example-invest.com",
+    "bank_account": "MOCK-456789",
+    "sales_chat": "Investasi dengan estimasi return 6% per tahun. Risiko mengikuti kondisi pasar.",
+    "expected_risk": "low"
+  },
+  {
+    "case_id": "CASE-004",
+    "company_name": "PT Aman Sejahtera Digital",
+    "website": "https://example.com",
+    "bank_account": "MOCK-987654",
+    "sales_chat": "Segera transfer ke rekening pribadi untuk mendapatkan profit 30% dalam 7 hari.",
+    "expected_risk": "high"
+  },
+  {
+    "case_id": "CASE-005",
+    "company_name": "PT Dana Bijak Indonesia",
+    "website": "https://example-finance.com",
+    "bank_account": "MOCK-112233",
+    "sales_chat": "Silakan pelajari informasi pembiayaan kami sebelum mengajukan.",
+    "expected_risk": "low"
+  },
+  {
+    "case_id": "CASE-006",
+    "company_name": "PT Cepat Kaya Indonesia",
+    "website": "https://example-scam.com",
+    "bank_account": "MOCK-445566",
+    "sales_chat": "Kirim OTP sekarang untuk mengaktifkan investasi dan jangan beri tahu siapa pun.",
+    "expected_risk": "critical"
+  }
+]
