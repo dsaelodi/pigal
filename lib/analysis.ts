@@ -14,12 +14,25 @@ export const RedFlagSchema = z.object({
   explanation: z.string(),
 });
 
+export const FindingSchema = z.object({
+  type: z.string(),
+  severity: z.string(),
+  title: z.string(),
+  description: z.string(),
+  evidence: z.string(),
+});
+
 export const AnalysisResponseSchema = z.object({
   riskScore: z.number().min(0).max(100),
   riskLevel: RiskLevelSchema,
   summary: z.string().min(1),
   redFlags: z.array(RedFlagSchema),
   recommendation: z.string().min(1),
+  status: z.string().optional(),
+  findings: z.array(FindingSchema).optional(),
+  recommendations: z.array(z.string()).optional(),
+  limitations: z.array(z.string()).optional(),
+  verification: z.record(z.string(), z.any()).optional(),
 });
 
 export const UploadedScreenshotSchema = z.object({

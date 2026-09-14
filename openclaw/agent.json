@@ -1,0 +1,34 @@
+{
+  "name": "scam-risk-assessment-agent",
+  "version": "1.0.0",
+  "description": "Evidence-based risk assessment for online lending, investment, and scam-related activities",
+  "runtime": "openclaw",
+  "engine": "gemini-1.5-pro",
+  "instructions": "Analyze user-submitted financial promotions or lending offers. Extract entities, conditionally verify through company registry, license registry, and bank account registry tools. Detect unrealistic claims and manipulative scam patterns. Calculate deterministic risk score based on policy weights without declaring definitive legal guilt.",
+  "workflow": [
+    "step_1_input_validation",
+    "step_2_entity_extraction",
+    "step_3_conditional_tool_orchestration",
+    "step_4_evidence_aggregation",
+    "step_5_deterministic_risk_assessment"
+  ],
+  "tools": [
+    "verify_company",
+    "verify_license",
+    "check_bank_account",
+    "analyze_website",
+    "analyze_claim",
+    "detect_scam_patterns"
+  ],
+  "output_contract": {
+    "status": "string",
+    "risk": {
+      "level": "LOW | MEDIUM | HIGH | CRITICAL | INSUFFICIENT_EVIDENCE",
+      "score": "number (0-100)",
+      "summary": "string"
+    },
+    "findings": "array of findings with severity, title, and evidence",
+    "recommendations": "array of strings",
+    "limitations": "array of strings"
+  }
+}
