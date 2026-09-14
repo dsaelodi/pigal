@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { runRiskAssessmentAgent } from "@/lib/agent";
+import { executeAnalysis } from "@/lib/agent";
 
 const evidenceSchema = z.object({
   companyName: z.string().optional(),
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       screenshots: evidence?.screenshots,
     };
 
-    const analysis = await runRiskAssessmentAgent(mergedInput);
+    const analysis = await executeAnalysis(mergedInput);
 
     if (analysis.status === "insufficient_evidence") {
       return NextResponse.json(

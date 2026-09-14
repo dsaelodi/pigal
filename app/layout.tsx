@@ -1,12 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
 import "./globals.css";
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Scam Risk Detector",
@@ -15,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${poppins.variable} h-full antialiased`}>
+    <html lang="en" className="h-full antialiased">
       <body className="min-h-full bg-[#fafaf8] text-[#171717]">{children}</body>
     </html>
   );

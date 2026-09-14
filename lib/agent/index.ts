@@ -1,3 +1,4 @@
+import { generateGeminiSummary, isGeminiEnabled } from "./gemini";
 import { extractEntities } from "./extractor";
 import { orchestrateTools } from "./orchestrator";
 import { evaluateRisk } from "./rule-engine";
@@ -8,7 +9,7 @@ import { AgentAnalysisResponse, AgentInput } from "./types";
  * Conforms to OpenClaw & Gemini pipeline defined in docs/agent-spec.md:
  * 
  * 1. Input Validation
- * 2. Entity Extraction
+ * 2. Entity Extraction (Powered by Gemini with Heuristic Fallback)
  * 3. Conditional Tool Orchestration (Verify Company, License, Bank Account, Website, Claims, Patterns)
  * 4. Evidence Aggregation
  * 5. Deterministic Risk Scoring & Explanation
@@ -55,8 +56,27 @@ export async function runRiskAssessmentAgent(input: AgentInput): Promise<AgentAn
   // Step 4: Deterministic Risk Assessment & Rule Engine
   const analysisResult = evaluateRisk(aggregatedEvidence);
 
+  // Step 5: Optional Gemini AI contextual summary enrichment
+  if (isGeminiEnabled() && analysisResult.findings.length > 0) {
+    try {
+      const geminiSummary = await generateGeminiSummary(
+        analysisResult.findings,
+        analysisResult.risk.score,
+        analysisResult.risk.level
+      );
+      if (geminiSummary) {
+        analysisResult.risk.summary = geminiSummary;
+        analysisResult.summary = geminiSummary;
+      }
+    } catch {
+      // Continue with deterministic summary
+    }
+  }
+
   return analysisResult;
 }
 
 export * from "./types";
 export * from "./datasets";
+export * from "./gemini";
+export * from "./openclaw-client";

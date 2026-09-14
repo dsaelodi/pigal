@@ -1,3 +1,4 @@
+import { extractEntitiesWithGemini, isGeminiEnabled } from "./gemini";
 import { AgentInput, ExtractedEntities } from "./types";
 
 export async function extractEntities(input: AgentInput): Promise<ExtractedEntities> {
@@ -30,7 +31,45 @@ export async function extractEntities(input: AgentInput): Promise<ExtractedEntit
     result.bank_account = bankAccount.trim();
   }
 
-  // 3. Regex / Heuristic Entity Extraction from raw text if missing
+  // 3. Gemini-powered entity extraction if enabled
+  if (rawText && isGeminiEnabled()) {
+    try {
+      const geminiEntities = await extractEntitiesWithGemini(rawText);
+      if (geminiEntities) {
+        if (!result.company_name && geminiEntities.company_name) {
+          result.company_name = geminiEntities.company_name;
+        }
+        if (!result.website && geminiEntities.website) {
+          result.website = geminiEntities.website;
+        }
+        if (!result.bank_account && geminiEntities.bank_account) {
+          result.bank_account = geminiEntities.bank_account;
+        }
+        if (!result.bank_name && geminiEntities.bank_name) {
+          result.bank_name = geminiEntities.bank_name;
+        }
+        if (!result.account_holder && geminiEntities.account_holder) {
+          result.account_holder = geminiEntities.account_holder;
+        }
+        if (!result.claimed_return && geminiEntities.claimed_return) {
+          result.claimed_return = geminiEntities.claimed_return;
+        }
+        if (!result.return_period && geminiEntities.return_period) {
+          result.return_period = geminiEntities.return_period;
+        }
+        if (geminiEntities.urgency_detected) {
+          result.urgency_detected = true;
+        }
+        if (geminiEntities.credential_request_detected) {
+          result.credential_request_detected = true;
+        }
+      }
+    } catch (e) {
+      console.warn("Gemini entity extraction skipped due to error:", e);
+    }
+  }
+
+  // 4. Regex / Heuristic Entity Extraction from raw text if still missing
   if (rawText) {
     // Company name detection (e.g. PT Example ..., CV Example ...)
     if (!result.company_name) {
