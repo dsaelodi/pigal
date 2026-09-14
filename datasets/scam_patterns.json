@@ -1,0 +1,66 @@
+[
+  {
+    "pattern_id": "SCAM-001",
+    "pattern": "unrealistic_return",
+    "description": "Promising unusually high returns in a short period.",
+    "severity": "high",
+    "examples": [
+      "profit 30% in 7 days",
+      "guaranteed return 50%",
+      "modal 1 juta jadi 5 juta dalam seminggu"
+    ]
+  },
+  {
+    "pattern_id": "SCAM-002",
+    "pattern": "urgency_pressure",
+    "description": "Creating pressure to transfer money immediately.",
+    "severity": "medium",
+    "examples": [
+      "promo ends tonight",
+      "transfer within 10 minutes",
+      "kesempatan terakhir hari ini"
+    ]
+  },
+  {
+    "pattern_id": "SCAM-003",
+    "pattern": "personal_account",
+    "description": "Requesting payment to an individual's personal bank account.",
+    "severity": "high",
+    "examples": [
+      "transfer ke rekening pribadi",
+      "transfer ke rekening atas nama Budi Santoso"
+    ]
+  },
+  {
+    "pattern_id": "SCAM-004",
+    "pattern": "guaranteed_profit",
+    "description": "Guaranteeing investment profits or claiming there is no possibility of loss.",
+    "severity": "high",
+    "examples": [
+      "profit pasti",
+      "100% tanpa risiko",
+      "dijamin tidak akan rugi"
+    ]
+  },
+  {
+    "pattern_id": "SCAM-005",
+    "pattern": "advance_payment",
+    "description": "Requesting money upfront before providing the promised service.",
+    "severity": "medium",
+    "examples": [
+      "bayar biaya aktivasi dulu",
+      "transfer deposit sebelum pencairan"
+    ]
+  },
+  {
+    "pattern_id": "SCAM-006",
+    "pattern": "credential_request",
+    "description": "Requesting sensitive banking credentials such as PIN, password, or OTP.",
+    "severity": "critical",
+    "examples": [
+      "kirim kode OTP",
+      "berikan PIN untuk verifikasi",
+      "kirim password rekening"
+    ]
+  }
+]

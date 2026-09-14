@@ -1,0 +1,42 @@
+[
+  {
+    "company_name": "PT Aman Sejahtera Digital",
+    "aliases": ["Aman Sejahtera", "ASD"],
+    "status": "verified",
+    "business_type": "fintech",
+    "license_status": "licensed",
+    "license_type": "P2P Lending",
+    "license_number": "MOCK-001",
+    "source": "mock-registry"
+  },
+  {
+    "company_name": "PT Cepat Kaya Indonesia",
+    "aliases": ["Cepat Kaya", "CKI"],
+    "status": "unverified",
+    "business_type": "unknown",
+    "license_status": "not_found",
+    "license_type": null,
+    "license_number": null,
+    "source": "mock-registry"
+  },
+  {
+    "company_name": "PT Investasi Nusantara",
+    "aliases": ["Investasi Nusantara", "IN"],
+    "status": "verified",
+    "business_type": "investment",
+    "license_status": "licensed",
+    "license_type": "Securities",
+    "license_number": "MOCK-002",
+    "source": "mock-registry"
+  },
+  {
+    "company_name": "PT Dana Bijak Indonesia",
+    "aliases": ["Dana Bijak", "DBI"],
+    "status": "verified",
+    "business_type": "fintech",
+    "license_status": "licensed",
+    "license_type": "Financing",
+    "license_number": "MOCK-003",
+    "source": "mock-registry"
+  }
+]

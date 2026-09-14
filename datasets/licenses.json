@@ -1,0 +1,30 @@
+[
+  {
+    "company_name": "PT Aman Sejahtera Digital",
+    "license_status": "active",
+    "license_type": "P2P Lending",
+    "license_number": "MOCK-001",
+    "regulator": "OJK"
+  },
+  {
+    "company_name": "PT Cepat Kaya Indonesia",
+    "license_status": "not_found",
+    "license_type": null,
+    "license_number": null,
+    "regulator": "OJK"
+  },
+  {
+    "company_name": "PT Investasi Nusantara",
+    "license_status": "active",
+    "license_type": "Securities",
+    "license_number": "MOCK-002",
+    "regulator": "OJK"
+  },
+  {
+    "company_name": "PT Dana Bijak Indonesia",
+    "license_status": "active",
+    "license_type": "Financing",
+    "license_number": "MOCK-003",
+    "regulator": "OJK"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "bank": "BCA",
+    "account_number": "MOCK-123456",
+    "account_name": "PT Aman Sejahtera Digital",
+    "status": "verified",
+    "risk_flag": false
+  },
+  {
+    "bank": "BRI",
+    "account_number": "MOCK-987654",
+    "account_name": "Budi Santoso",
+    "status": "personal",
+    "risk_flag": true
+  },
+  {
+    "bank": "Mandiri",
+    "account_number": "MOCK-456789",
+    "account_name": "PT Investasi Nusantara",
+    "status": "verified",
+    "risk_flag": false
+  },
+  {
+    "bank": "BNI",
+    "account_number": "MOCK-112233",
+    "account_name": "PT Dana Bijak Indonesia",
+    "status": "verified",
+    "risk_flag": false
+  },
+  {
+    "bank": "BRI",
+    "account_number": "MOCK-445566",
+    "account_name": "Andi Wijaya",
+    "status": "personal",
+    "risk_flag": true
+  }
+]
