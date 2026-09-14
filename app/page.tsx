@@ -574,10 +574,28 @@ export default function HomePage() {
                 <div className="rounded-2xl border border-[#e5e7eb] bg-white p-4">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 size={18} className="text-[#2563eb]" />
-                    <h3 className="text-lg font-semibold text-[#171717]">Recommendation</h3>
+                    <h3 className="text-lg font-semibold text-[#171717]">Recommendations</h3>
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-[#374151]">{result.recommendation}</p>
+                  {result.recommendations && result.recommendations.length > 1 ? (
+                    <ul className="mt-3 space-y-2 text-sm leading-6 text-[#374151]">
+                      {result.recommendations.map((rec, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
+                          <span>{rec}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-3 text-sm leading-6 text-[#374151]">{result.recommendation}</p>
+                  )}
                 </div>
+
+                {result.limitations && result.limitations.length > 0 && (
+                  <div className="rounded-xl border border-[#e5e7eb] bg-[#f8fafc] p-3.5 text-xs leading-5 text-[#6b7280]">
+                    <span className="font-medium text-[#4b5563]">Catatan Analitis: </span>
+                    {result.limitations.join(" ")}
+                  </div>
+                )}
               </div>
             )}
           </aside>

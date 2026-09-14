@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { runRiskAssessmentAgent } from "@/lib/agent";
 
 const evidenceSchema = z.object({
   companyName: z.string().optional(),
@@ -14,33 +15,25 @@ const evidenceSchema = z.object({
       z.object({
         id: z.string(),
         name: z.string(),
-        size: z.number(),
-        type: z.string(),
-        previewUrl: z.string(),
-      }),
+        size: z.number().optional(),
+        type: z.string().optional(),
+        previewUrl: z.string().optional(),
+      })
     )
     .optional(),
 });
 
 const requestSchema = z.object({
-  content: z.string().trim().min(1).max(8000),
+  content: z.string().optional(),
+  companyName: z.string().optional(),
+  website: z.string().optional(),
+  bankAccountNumber: z.string().optional(),
+  bankAccount: z.string().optional(),
+  investmentProposal: z.string().optional(),
+  salesChat: z.string().optional(),
+  links: z.array(z.string()).optional(),
+  socialMedia: z.array(z.string()).optional(),
   evidence: evidenceSchema.optional(),
-});
-
-const responseSchema = z.object({
-  riskScore: z.number().min(0).max(100),
-  riskLevel: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]),
-  summary: z.string().min(1),
-  redFlags: z.array(
-    z.object({
-      type: z.string(),
-      title: z.string(),
-      severity: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]),
-      evidence: z.string(),
-      explanation: z.string(),
-    }),
-  ),
-  recommendation: z.string().min(1),
 });
 
 export async function POST(request: Request) {
@@ -51,62 +44,48 @@ export async function POST(request: Request) {
     if (!parsed.success) {
       return NextResponse.json(
         {
-          error: "Please provide enough content to analyze.",
+          error: "Format permintaan analisis tidak valid.",
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
-    const { content, evidence } = parsed.data;
-    const combined = [content, evidence?.companyName, evidence?.website, evidence?.salesChat, evidence?.investmentProposal]
-      .filter(Boolean)
-      .join(" ");
+    const { content, evidence, ...rest } = parsed.data;
 
-    const score = Math.min(94, Math.max(18, combined.length / 12));
-    const riskScore = Math.round(score);
-    const riskLevel = riskScore >= 75 ? "HIGH" : riskScore >= 45 ? "MEDIUM" : "LOW";
-
-    const analysis = {
-      riskScore,
-      riskLevel,
-      summary: "Several high-risk indicators were detected in the submitted evidence.",
-      redFlags: [
-        {
-          type: "UNREALISTIC_RETURN",
-          title: "Unrealistic Return",
-          severity: "HIGH",
-          evidence: evidence?.investmentProposal || "Guaranteed high return offer",
-          explanation: "The evidence suggests a claim of unusually high returns within a short time frame, which is a common warning sign for speculative fraud.",
-        },
-        {
-          type: "PERSONAL_ACCOUNT",
-          title: "Personal Account Transfer",
-          severity: "CRITICAL",
-          evidence: evidence?.bankAccountNumber || "Funds requested to a personal account",
-          explanation: "Requests to move funds to a personal account increase the risk of theft and complicate verification of a legitimate business process.",
-        },
-      ],
-      recommendation: "Verify the business entity, licensing, and payment destination before transferring funds or sharing personal information.",
+    // Merge evidence fields whether passed inside evidence object or at root
+    const mergedInput = {
+      content: content || "",
+      companyName: evidence?.companyName || rest.companyName,
+      website: evidence?.website || rest.website,
+      bankAccountNumber: evidence?.bankAccountNumber || rest.bankAccountNumber || rest.bankAccount,
+      investmentProposal: evidence?.investmentProposal || rest.investmentProposal,
+      salesChat: evidence?.salesChat || rest.salesChat,
+      links: evidence?.links || rest.links,
+      socialMedia: evidence?.socialMedia || rest.socialMedia,
+      screenshots: evidence?.screenshots,
     };
 
-    const validated = responseSchema.safeParse(analysis);
+    const analysis = await runRiskAssessmentAgent(mergedInput);
 
-    if (!validated.success) {
+    if (analysis.status === "insufficient_evidence") {
       return NextResponse.json(
         {
-          error: "The analysis response was invalid.",
+          error: "Bukti tidak mencukupi untuk dianalisis.",
+          analysis,
         },
-        { status: 502 },
+        { status: 422 }
       );
     }
 
-    return NextResponse.json(validated.data);
-  } catch {
+    return NextResponse.json(analysis);
+  } catch (error) {
+    console.error("Agent execution error:", error);
     return NextResponse.json(
       {
-        error: "The analysis service is temporarily unavailable. Please try again.",
+        error: "Layanan analisis risiko sedang tidak tersedia. Silakan coba beberapa saat lagi.",
       },
-      { status: 503 },
+      { status: 503 }
     );
   }
 }
+
