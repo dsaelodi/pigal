@@ -1,6 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+node_modules/
 /node_modules
 /.pnp
 .pnp.*
@@ -9,34 +7,89 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+vendor/
+.pub-cache/
+.dart_tool/
 
-# testing
-/coverage
+# ====================================================================
+# PYTHON (Virtual Environments & Cache)
+# ====================================================================
+venv/
+.venv/
+env/
+.env/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.poetry/
+pip-log.txt
+pip-delete-this-directory.txt
 
-# next.js
+# ====================================================================
+# DEVELOPMENT & PRODUCTION BUILDS (Hasil Compile)
+# ====================================================================
+dist/
+build/
+out/
+bin/
+obj/
 /.next/
-/out/
+/coverage
+*.tsbuildinfo
+next-env.d.ts
+*.exe
+*.dll
+*.so
+*.war
+*.ear
+*.rar
+*.zip
 
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# ====================================================================
+# DATABASE & LOGS (Data lokal & catatan error)
+# ====================================================================
+*.db
+*.sqlite3
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-!.env.example
-
-# vercel
+# ====================================================================
+# SECURITY & SECRETS (Wajib disembunyikan!)
+# ====================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.cert
+credentials.json
 .vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# ====================================================================
+# IDE / TEXT EDITORS & OPERATING SYSTEMS (Sampah OS & Editor)
+# ====================================================================
+# VS Code
+.vscode/
+!.vscode/extensions.json
+.history/
+
+# JetBrains (PyCharm, IntelliJ, WebStorm)
+.idea/
+*.iws
+
+# Operating Systems
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

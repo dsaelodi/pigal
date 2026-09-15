@@ -132,6 +132,7 @@ export default function HomePage() {
         size: file.size,
         type: file.type,
         previewUrl: URL.createObjectURL(file),
+        file,
       });
     }
 
@@ -198,11 +199,19 @@ export default function HomePage() {
     setError(null);
 
     try {
-      const payload = await analyzeContent(composedContent, {
-        ...evidence,
-        links: trimmedLinkList,
-        socialMedia: trimmedSocialMedia,
-      });
+      const files = (evidence.screenshots ?? [])
+        .map((item) => item.file)
+        .filter((file): file is File => Boolean(file));
+
+      const payload = await analyzeContent(
+        composedContent,
+        {
+          ...evidence,
+          links: trimmedLinkList,
+          socialMedia: trimmedSocialMedia,
+        },
+        files,
+      );
 
       const parsed = AnalysisResponseSchema.safeParse(payload);
 

@@ -41,6 +41,7 @@ export const UploadedScreenshotSchema = z.object({
   size: z.number(),
   type: z.string(),
   previewUrl: z.string(),
+  file: z.instanceof(File).optional(),
 });
 
 export const EvidenceSchema = z.object({
@@ -89,51 +90,6 @@ export const sampleEvidenceSets = {
   },
 };
 
-const lowRiskResponse: AnalysisResponse = {
-  riskScore: 22,
-  riskLevel: "LOW",
-  summary: "The content contains no obvious scam indicators and reads like a standard business idea rather than a high-pressure financial pitch.",
-  redFlags: [],
-  recommendation: "Review the details and verify the business credentials before committing any money or sharing personal information.",
-};
-
-const highRiskResponse: AnalysisResponse = {
-  riskScore: 87,
-  riskLevel: "HIGH",
-  summary: "Several high-risk indicators were detected, including unrealistic returns, urgency, and requests for transfers to a personal account.",
-  redFlags: [
-    {
-      type: "UNREALISTIC_RETURN",
-      title: "Unrealistic Return",
-      severity: "HIGH",
-      evidence: "Earn 35% in 7 days",
-      explanation: "The claim promises an unusually high return within a very short time frame, which is a classic warning sign for speculative financial fraud.",
-    },
-    {
-      type: "URGENT_PRESSURE",
-      title: "Urgency Tactics",
-      severity: "HIGH",
-      evidence: "Limited slots and quick action required",
-      explanation: "The promotion pressures the recipient to move quickly without time for due diligence, which is often used to stop independent verification.",
-    },
-    {
-      type: "PERSONAL_ACCOUNT",
-      title: "Personal Account Request",
-      severity: "CRITICAL",
-      evidence: "Transfer funds into a personal account",
-      explanation: "Requests for funds to be sent to a personal account, rather than a registered business account, increase the risk of theft or illegal financial activity.",
-    },
-    {
-      type: "REFERRAL_STRUCTURE",
-      title: "Referral Pattern",
-      severity: "MEDIUM",
-      evidence: "Invite friends and refer others",
-      explanation: "The promise of recruiting others rather than relying on a legitimate product or regulated service is consistent with referral-based or pyramid-style schemes.",
-    },
-  ],
-  recommendation: "Do not transfer funds or disclose personal details until the entity, licensing, and payment destination can be verified through formal business records.",
-};
-
 export function getRiskTone(level: RiskLevel) {
   switch (level) {
     case "LOW":
@@ -179,7 +135,11 @@ export function isValidHttpUrl(value: string): boolean {
   }
 }
 
-export async function analyzeContent(input: string, evidence?: EvidenceInput): Promise<AnalysisResponse> {
+export async function analyzeContent(
+  input: string,
+  evidence?: EvidenceInput,
+  files?: File[]
+): Promise<AnalysisResponse> {
   const content = input.trim();
   const requestBody: AnalyzeRequest = {
     content,
@@ -187,34 +147,84 @@ export async function analyzeContent(input: string, evidence?: EvidenceInput): P
   };
 
   try {
-    const response = await fetch("/api/analyze", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
+    let response: Response;
+
+    if (files && files.length > 0) {
+      console.debug("[analyzeContent] using multipart/form-data", { fileCount: files.length });
+      const formData = new FormData();
+      formData.append("content", content);
+
+      if (evidence?.companyName) formData.append("companyName", evidence.companyName);
+      if (evidence?.website) formData.append("website", evidence.website);
+      if (evidence?.bankAccountNumber) formData.append("bankAccountNumber", evidence.bankAccountNumber);
+      if (evidence?.investmentProposal) formData.append("investmentProposal", evidence.investmentProposal);
+      if (evidence?.salesChat) formData.append("salesChat", evidence.salesChat);
+      if (evidence?.links && evidence.links.length > 0) {
+        for (const link of evidence.links) {
+          formData.append("links", link);
+        }
+      }
+      if (evidence?.socialMedia && evidence.socialMedia.length > 0) {
+        for (const item of evidence.socialMedia) {
+          formData.append("socialMedia", item);
+        }
+      }
+
+      files.forEach((file) => {
+        formData.append("screenshots", file, file.name);
+      });
+
+      console.debug("[analyzeContent] screenshots appended", {
+        screenshotCount: formData.getAll("screenshots").length,
+      });
+
+      response = await fetch("/api/analyze", {
+        method: "POST",
+        body: formData,
+      });
+    } else {
+      console.debug("[analyzeContent] using JSON", { fileCount: files?.length ?? 0 });
+      response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+    }
 
     if (!response.ok) {
-      throw new Error("Request failed");
+      const responseBody = await response.text();
+      const error = new Error(`Analysis API returned HTTP ${response.status}.`);
+      console.error("[analyzeContent] non-2xx backend response", {
+        status: response.status,
+        body: responseBody,
+      });
+      throw error;
     }
 
-    const payload = await response.json();
-    return AnalysisResponseSchema.parse(payload);
-  } catch {
-    const normalized = content.toLowerCase();
-
-    if (
-      normalized.includes("low risk") ||
-      normalized.includes("licensed") ||
-      normalized.includes("registered business") ||
-      (evidence &&
-        ((evidence.companyName && /licensed|registered/i.test(evidence.companyName)) ||
-          (evidence.website && /official|verified/i.test(evidence.website))))
-    ) {
-      return lowRiskResponse;
+    let payload: unknown;
+    try {
+      payload = await response.json();
+    } catch (error) {
+      console.error("[analyzeContent] response parsing failure", error);
+      throw error;
     }
 
-    return highRiskResponse;
+    const parsed = AnalysisResponseSchema.safeParse(payload);
+    if (!parsed.success) {
+      console.error("[analyzeContent] invalid backend response schema", {
+        issues: parsed.error.issues,
+        payload,
+      });
+      throw parsed.error;
+    }
+
+    return parsed.data;
+  } catch (error) {
+    if (error instanceof TypeError) {
+      console.error("[analyzeContent] network/request failure", error);
+    }
+    throw error;
   }
 }
