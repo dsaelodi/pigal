@@ -29,17 +29,17 @@ import {
 } from "@/lib/analysis";
 
 const riskMeta = {
-  LOW: { label: "Low risk", color: "text-emerald-700" },
-  MEDIUM: { label: "Medium risk", color: "text-amber-700" },
-  HIGH: { label: "High risk", color: "text-orange-700" },
-  CRITICAL: { label: "Critical risk", color: "text-red-700" },
+  LOW: { label: "Low risk", color: "text-green-700", bar: "bg-green-600" },
+  MEDIUM: { label: "Medium risk", color: "text-yellow-700", bar: "bg-yellow-500" },
+  HIGH: { label: "High risk", color: "text-red-700", bar: "bg-red-600" },
+  CRITICAL: { label: "Critical risk", color: "text-red-800", bar: "bg-red-800" },
 } as const;
 
 const severityMeta = {
-  LOW: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  MEDIUM: "border-amber-200 bg-amber-50 text-amber-700",
-  HIGH: "border-orange-200 bg-orange-50 text-orange-700",
-  CRITICAL: "border-red-200 bg-red-50 text-red-700",
+  LOW: "border-green-600 text-green-700",
+  MEDIUM: "border-yellow-600 text-yellow-700",
+  HIGH: "border-red-600 text-red-700",
+  CRITICAL: "border-red-800 bg-red-800 text-white",
 } as const;
 
 const initialEvidence: EvidenceInput = {
@@ -229,386 +229,79 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fafaf8] text-[#171717]">
-      <div className="mx-auto w-full max-w-[1200px] px-4 py-8 sm:px-6 lg:px-8">
-        <header className="mb-8">
-          <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#e5e7eb] bg-white px-4 py-3 shadow-[0_1px_0_rgba(17,24,39,0.02)] sm:px-5">
+    <main className="min-h-screen bg-[#f4f5f7] text-[#111827]">
+      <div className="mx-auto max-w-[1400px] px-4 py-5 sm:px-6 lg:px-8">
+        <header className="flex items-center justify-between border-b-2 border-[#111827] pb-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center bg-[#111827] text-white"><ShieldAlert size={19} /></div>
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#6b7280]">Scam Risk Detector</p>
-              <h1 className="mt-1 text-lg font-semibold text-[#171717]">Investment risk analysis</h1>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#4b5563]">PIGAL / RISK INTELLIGENCE</p>
+              <h1 className="mt-0.5 text-lg font-semibold tracking-tight">Financial evidence assessment</h1>
             </div>
-            <div className="hidden items-center gap-2 rounded-full border border-[#e5e7eb] bg-[#f3f4f6] px-3 py-1.5 text-xs font-medium text-[#525252] sm:flex">
-              <ShieldAlert size={14} />
-              Evidence-based review
-            </div>
+          </div>
+          <div className="hidden text-right sm:block">
+            <p className="mono-data text-[10px] uppercase tracking-[0.12em] text-[#6b7280]">CASE WORKSPACE</p>
+            <p className="text-xs font-medium text-[#111827]">Evidence-based review</p>
           </div>
         </header>
 
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
-          <section className="rounded-[20px] border border-[#e5e7eb] bg-white p-5 sm:p-7">
-            <div className="mb-6 flex items-start justify-between gap-4">
+        <div className="grid gap-6 py-6 lg:grid-cols-[minmax(0,0.88fr)_minmax(480px,1.12fr)]">
+          <section className="min-w-0">
+            <div className="mb-5 flex items-end justify-between border-b border-[#9ca3af] pb-3">
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#6b7280]">Analyzer</p>
-                <h2 className="mt-2 text-2xl font-semibold text-[#171717] sm:text-3xl">Analyze potential risk</h2>
+                <p className="mono-data text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2563eb]">01 / INPUT EVIDENCE</p>
+                <h2 className="mt-1 text-2xl font-semibold tracking-tight">Start a review</h2>
+                <p className="mt-1 max-w-xl text-sm text-[#4b5563]">Upload a screenshot or provide the source details. Every field is optional; submit what you have.</p>
               </div>
-              {hasAnyEvidence && (
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="inline-flex items-center gap-2 rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm font-medium text-[#525252] transition hover:border-[#d1d5db] hover:bg-[#f3f4f6]"
-                >
-                  <Trash2 size={14} />
-                  Reset
-                </button>
-              )}
+              {hasAnyEvidence && <button type="button" onClick={handleReset} className="inline-flex items-center gap-2 border border-[#9ca3af] bg-white px-3 py-2 text-xs font-semibold uppercase tracking-wide hover:border-[#111827] hover:bg-[#111827] hover:text-white"><Trash2 size={14} /> Reset</button>}
             </div>
 
             <div className="space-y-5">
-              <div className="rounded-2xl border border-[#e5e7eb] bg-[#f8fafc] p-4">
-                <div className="flex items-center gap-2 text-sm font-medium text-[#171717]">
-                  <Upload size={16} className="text-[#2563eb]" />
-                  Screenshot evidence
+              <div className="border border-[#9ca3af] bg-white p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold"><Upload size={16} className="text-[#2563eb]" /> Screenshot evidence</div>
+                  <span className="mono-data text-[10px] text-[#6b7280]">PNG / JPG / WEBP · 5 MB</span>
                 </div>
-
-                <div className="mt-4">
-                  <label className="flex min-h-[120px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[#cbd5e1] bg-white px-4 py-5 text-center transition hover:border-[#93c5fd]">
-                    <ImageIcon size={20} className="mb-2 text-[#6b7280]" />
-                    <span className="text-sm font-medium text-[#171717]">Upload screenshot</span>
-                    <span className="mt-1 text-xs text-[#6b7280]">PNG, JPG, JPEG, WEBP • Max size: 5 MB</span>
-                    <input
-                      ref={screenshotInputRef}
-                      type="file"
-                      accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp"
-                      multiple
-                      className="hidden"
-                      onChange={handleScreenshot}
-                    />
-                  </label>
-                </div>
-
-                {(evidence.screenshots ?? []).length > 0 && (
-                  <div className="mt-4 space-y-3">
-                    {(evidence.screenshots ?? []).map((item) => (
-                      <div key={item.id} className="flex items-center gap-3 rounded-xl border border-[#e5e7eb] bg-white p-2">
-                        <div className="h-14 w-14 overflow-hidden rounded-md border border-[#e5e7eb] bg-[#f3f4f6]">
-                          <Image
-                            src={item.previewUrl}
-                            alt={item.name}
-                            width={56}
-                            height={56}
-                            unoptimized
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-medium text-[#171717]">{item.name}</p>
-                          <p className="text-xs text-[#6b7280]">{formatFileSize(item.size)}</p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeScreenshot(item.id)}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#e5e7eb] bg-white text-[#525252] transition hover:border-[#d1d5db] hover:bg-[#f3f4f6]"
-                          aria-label={`Remove ${item.name}`}
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <label htmlFor="companyName" className="mb-2 block text-sm font-medium text-[#374151]">
-                    Company name
-                  </label>
-                  <input
-                    id="companyName"
-                    value={evidence.companyName ?? ""}
-                    onChange={(event) => updateEvidence("companyName", event.target.value)}
-                    placeholder="PT Example Investasi"
-                    className="w-full rounded-xl border border-[#d1d5db] bg-[#fafaf8] px-3 py-2.5 text-[15px] text-[#171717] outline-none transition focus:border-[#2563eb] focus:ring-4 focus:ring-[#dbeafe]"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="website" className="mb-2 block text-sm font-medium text-[#374151]">
-                    Website / URL
-                  </label>
-                  <input
-                    id="website"
-                    type="url"
-                    value={evidence.website ?? ""}
-                    onChange={(event) => updateEvidence("website", event.target.value)}
-                    placeholder="https://example.com"
-                    className="w-full rounded-xl border border-[#d1d5db] bg-[#fafaf8] px-3 py-2.5 text-[15px] text-[#171717] outline-none transition focus:border-[#2563eb] focus:ring-4 focus:ring-[#dbeafe]"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="bankAccountNumber" className="mb-2 block text-sm font-medium text-[#374151]">
-                  Bank account number
+                <label className="mt-4 flex min-h-[92px] cursor-pointer items-center gap-4 border border-dashed border-[#6b7280] bg-[#f9fafb] px-4 py-4 hover:border-[#2563eb] hover:bg-white">
+                  <ImageIcon size={24} className="shrink-0 text-[#2563eb]" />
+                  <span><strong className="block text-sm">Upload a screenshot</strong><span className="mt-1 block text-xs text-[#6b7280]">Chats, offers, payment instructions, or account details.</span></span>
+                  <input ref={screenshotInputRef} type="file" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" multiple className="hidden" onChange={handleScreenshot} />
                 </label>
-                <input
-                  id="bankAccountNumber"
-                  type="text"
-                  inputMode="numeric"
-                  value={evidence.bankAccountNumber ?? ""}
-                  onChange={(event) => updateEvidence("bankAccountNumber", event.target.value)}
-                  placeholder="Account or bank identifier"
-                  className="w-full rounded-xl border border-[#d1d5db] bg-[#fafaf8] px-3 py-2.5 text-[15px] text-[#171717] outline-none transition focus:border-[#2563eb] focus:ring-4 focus:ring-[#dbeafe]"
-                />
+                {(evidence.screenshots ?? []).length > 0 && <div className="mt-3 divide-y divide-[#e5e7eb] border border-[#e5e7eb]">{(evidence.screenshots ?? []).map((item) => <div key={item.id} className="flex items-center gap-3 p-2"><Image src={item.previewUrl} alt={item.name} width={42} height={42} unoptimized className="h-[42px] w-[42px] object-cover" /><div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{item.name}</p><p className="mono-data text-[10px] text-[#6b7280]">{formatFileSize(item.size)}</p></div><button type="button" onClick={() => removeScreenshot(item.id)} className="p-2 text-[#6b7280] hover:bg-[#111827] hover:text-white" aria-label={`Remove ${item.name}`}><X size={15} /></button></div>)}</div>}
               </div>
 
-              <div>
-                <label htmlFor="investmentProposal" className="mb-2 block text-sm font-medium text-[#374151]">
-                  Investment proposal
-                </label>
-                <textarea
-                  id="investmentProposal"
-                  value={evidence.investmentProposal ?? ""}
-                  onChange={(event) => updateEvidence("investmentProposal", event.target.value)}
-                  placeholder="Paste the investment proposal or offer details..."
-                  className="min-h-[180px] w-full resize-y rounded-xl border border-[#d1d5db] bg-[#fafaf8] px-3 py-2.5 text-[15px] leading-6 text-[#171717] outline-none transition focus:border-[#2563eb] focus:ring-4 focus:ring-[#dbeafe]"
-                />
+              <div className="grid gap-x-4 gap-y-4 sm:grid-cols-2">
+                <label className="block text-xs font-semibold uppercase tracking-wide text-[#374151]">Company name<input id="companyName" value={evidence.companyName ?? ""} onChange={(event) => updateEvidence("companyName", event.target.value)} placeholder="PT Example Investasi" className="mt-2 w-full border border-[#9ca3af] bg-white px-3 py-2.5 text-sm font-normal normal-case tracking-normal outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]" /></label>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-[#374151]">Website / URL<input id="website" type="url" value={evidence.website ?? ""} onChange={(event) => updateEvidence("website", event.target.value)} placeholder="https://example.com" className="mt-2 w-full border border-[#9ca3af] bg-white px-3 py-2.5 text-sm font-normal normal-case tracking-normal outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]" /></label>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-[#374151] sm:col-span-2">Bank account number<input id="bankAccountNumber" type="text" inputMode="numeric" value={evidence.bankAccountNumber ?? ""} onChange={(event) => updateEvidence("bankAccountNumber", event.target.value)} placeholder="Account or bank identifier" className="mono-data mt-2 w-full border border-[#9ca3af] bg-white px-3 py-2.5 text-sm font-normal normal-case tracking-normal outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]" /></label>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-[#374151] sm:col-span-2">Investment proposal<textarea id="investmentProposal" value={evidence.investmentProposal ?? ""} onChange={(event) => updateEvidence("investmentProposal", event.target.value)} placeholder="Paste the offer, return claim, or terms..." className="mt-2 min-h-[108px] w-full resize-y border border-[#9ca3af] bg-white px-3 py-2.5 text-sm font-normal normal-case tracking-normal outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]" /></label>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-[#374151] sm:col-span-2">Sales chat<textarea id="salesChat" value={evidence.salesChat ?? ""} onChange={(event) => updateEvidence("salesChat", event.target.value)} placeholder="Paste the conversation with the sales representative..." className="mt-2 min-h-[108px] w-full resize-y border border-[#9ca3af] bg-white px-3 py-2.5 text-sm font-normal normal-case tracking-normal outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]" /></label>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-[#374151]">Links<textarea id="links" value={(evidence.links ?? []).join("\n")} onChange={(event) => updateEvidence("links", parseTextList(event.target.value))} placeholder="https://example.com" className="mt-2 min-h-[76px] w-full resize-y border border-[#9ca3af] bg-white px-3 py-2.5 text-sm font-normal normal-case tracking-normal outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]" /></label>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-[#374151]">Social media<textarea id="socialMedia" value={(evidence.socialMedia ?? []).join("\n")} onChange={(event) => updateEvidence("socialMedia", parseTextList(event.target.value))} placeholder="https://instagram.com/brand" className="mt-2 min-h-[76px] w-full resize-y border border-[#9ca3af] bg-white px-3 py-2.5 text-sm font-normal normal-case tracking-normal outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]" /></label>
               </div>
 
-              <div>
-                <label htmlFor="salesChat" className="mb-2 block text-sm font-medium text-[#374151]">
-                  Sales chat
-                </label>
-                <textarea
-                  id="salesChat"
-                  value={evidence.salesChat ?? ""}
-                  onChange={(event) => updateEvidence("salesChat", event.target.value)}
-                  placeholder="Paste the conversation with the sales representative..."
-                  className="min-h-[180px] w-full resize-y rounded-xl border border-[#d1d5db] bg-[#fafaf8] px-3 py-2.5 text-[15px] leading-6 text-[#171717] outline-none transition focus:border-[#2563eb] focus:ring-4 focus:ring-[#dbeafe]"
-                />
-              </div>
+              <div className="border-y border-[#9ca3af] py-3"><div className="mb-2 flex items-center justify-between"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide"><BadgeCheck size={15} className="text-green-700" /> Evidence checklist</div><span className="mono-data text-[10px] text-[#6b7280]">{evidenceSummary.filter((item) => item.present).length} / {evidenceSummary.length} present</span></div><div className="grid gap-x-4 gap-y-1 sm:grid-cols-2">{evidenceSummary.map((item) => <div key={item.label} className="flex items-center gap-2 text-xs"><span className={`h-2 w-2 ${item.present ? "bg-green-600" : "bg-[#d1d5db]"}`} /><span className={item.present ? "text-[#111827]" : "text-[#6b7280]"}>{item.label}</span></div>)}</div></div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <label htmlFor="links" className="mb-2 block text-sm font-medium text-[#374151]">
-                    Link / URL
-                  </label>
-                  <textarea
-                    id="links"
-                    value={(evidence.links ?? []).join("\n")}
-                    onChange={(event) => updateEvidence("links", parseTextList(event.target.value))}
-                    placeholder="https://example.com\nhttps://example.org"
-                    className="min-h-[110px] w-full resize-y rounded-xl border border-[#d1d5db] bg-[#fafaf8] px-3 py-2.5 text-[15px] leading-6 text-[#171717] outline-none transition focus:border-[#2563eb] focus:ring-4 focus:ring-[#dbeafe]"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="socialMedia" className="mb-2 block text-sm font-medium text-[#374151]">
-                    Social media
-                  </label>
-                  <textarea
-                    id="socialMedia"
-                    value={(evidence.socialMedia ?? []).join("\n")}
-                    onChange={(event) => updateEvidence("socialMedia", parseTextList(event.target.value))}
-                    placeholder="https://instagram.com/brand\nhttps://tiktok.com/@brand"
-                    className="min-h-[110px] w-full resize-y rounded-xl border border-[#d1d5db] bg-[#fafaf8] px-3 py-2.5 text-[15px] leading-6 text-[#171717] outline-none transition focus:border-[#2563eb] focus:ring-4 focus:ring-[#dbeafe]"
-                  />
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-[#e5e7eb] bg-[#f8fafc] p-4">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-sm font-medium text-[#171717]">
-                    <BadgeCheck size={16} className="text-[#2563eb]" />
-                    Evidence summary
-                  </div>
-                  <div className="text-xs text-[#6b7280]">{evidenceSummary.filter((item) => item.present).length} provided</div>
-                </div>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {evidenceSummary.map((item) => (
-                    <div key={item.label} className="flex items-center gap-2 text-sm">
-                      <span className={`inline-flex h-2.5 w-2.5 rounded-full ${item.present ? "bg-emerald-600" : "bg-[#d1d5db]"}`} />
-                      <span className={item.present ? "text-[#171717]" : "text-[#6b7280]"}>{item.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {error && (
-                <div className="flex items-start gap-3 rounded-xl border border-[#fecaca] bg-[#fff1f2] px-3 py-3 text-sm text-[#991b1b]" role="alert">
-                  <CircleAlert size={16} className="mt-0.5 shrink-0" />
-                  <span>{error}</span>
-                </div>
-              )}
-
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  disabled={loading || !hasAnyEvidence}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563eb] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#1d4ed8] disabled:cursor-not-allowed disabled:bg-[#93c5fd]"
-                >
-                  {loading ? "Analyzing…" : "Analyze"}
-                  {!loading && <ArrowRight size={16} />}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setEvidence(sampleEvidenceSets.exampleA as EvidenceInput)}
-                  className="inline-flex items-center justify-center rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#374151] transition hover:border-[#cbd5e1] hover:bg-[#f3f4f6]"
-                >
-                  Example A
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setEvidence(sampleEvidenceSets.exampleB as EvidenceInput)}
-                  className="inline-flex items-center justify-center rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#374151] transition hover:border-[#cbd5e1] hover:bg-[#f3f4f6]"
-                >
-                  Example B
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setEvidence(sampleEvidenceSets.exampleC as EvidenceInput)}
-                  className="inline-flex items-center justify-center rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#374151] transition hover:border-[#cbd5e1] hover:bg-[#f3f4f6]"
-                >
-                  Screenshot only
-                </button>
-              </div>
+              {error && <div className="flex items-start gap-3 border border-red-600 bg-white px-3 py-3 text-sm text-red-700" role="alert"><CircleAlert size={16} className="mt-0.5 shrink-0" /><span>{error}</span></div>}
+              <div className="flex flex-wrap gap-2"><button type="button" onClick={handleSubmit} disabled={loading || !hasAnyEvidence} className="inline-flex items-center gap-2 bg-[#111827] px-5 py-3 text-sm font-semibold text-white hover:bg-[#2563eb] disabled:cursor-not-allowed disabled:bg-[#9ca3af]">{loading ? "Analyzing..." : "Analyze evidence"}{!loading && <ArrowRight size={16} />}</button><button type="button" onClick={() => setEvidence(sampleEvidenceSets.exampleA as EvidenceInput)} className="border border-[#9ca3af] bg-white px-3 py-3 text-xs font-semibold uppercase tracking-wide hover:border-[#111827]">Load example A</button><button type="button" onClick={() => setEvidence(sampleEvidenceSets.exampleB as EvidenceInput)} className="border border-[#9ca3af] bg-white px-3 py-3 text-xs font-semibold uppercase tracking-wide hover:border-[#111827]">Load example B</button><button type="button" onClick={() => setEvidence(sampleEvidenceSets.exampleC as EvidenceInput)} className="border border-[#9ca3af] bg-white px-3 py-3 text-xs font-semibold uppercase tracking-wide hover:border-[#111827]">Screenshot only</button></div>
             </div>
           </section>
 
-          <aside className="rounded-[20px] border border-[#e5e7eb] bg-white p-5 sm:p-7">
-            {!result && !loading && !error && (
-              <div className="flex h-full min-h-[260px] flex-col justify-center rounded-2xl border border-dashed border-[#d1d5db] bg-[#f8fafc] p-6 text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-[#e5e7eb] bg-white">
-                  <ShieldAlert size={20} className="text-[#4b5563]" />
-                </div>
-                <h3 className="text-lg font-semibold text-[#171717]">No analysis yet</h3>
-                <p className="mt-2 text-sm leading-6 text-[#6b7280]">
-                  Add any available evidence and submit it for a structured risk review.
-                </p>
-              </div>
-            )}
-
-            {loading && (
-              <div className="flex h-full min-h-[260px] flex-col justify-center rounded-2xl border border-[#e5e7eb] bg-[#fafaf8] p-6">
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="h-3 w-3 animate-pulse rounded-full bg-[#2563eb]" />
-                  <div className="h-3 w-28 rounded-full bg-[#e5e7eb]" />
-                </div>
-                <div className="space-y-3">
-                  <div className="h-4 w-full rounded-full bg-[#e5e7eb]" />
-                  <div className="h-4 w-4/5 rounded-full bg-[#e5e7eb]" />
-                  <div className="h-4 w-3/5 rounded-full bg-[#e5e7eb]" />
-                </div>
-                <p className="mt-5 text-sm text-[#6b7280]">Reviewing the submitted evidence for urgency, payment patterns, and credibility signals.</p>
-              </div>
-            )}
-
-            {result && (
-              <div className="space-y-6">
-                <div className={`rounded-2xl border p-4 ${resultToneClass}`}>
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#6b7280]">Risk level</p>
-                      <h3 className={`mt-2 text-2xl font-semibold ${riskMeta[result.riskLevel].color}`}>
-                        {riskMeta[result.riskLevel].label}
-                      </h3>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#6b7280]">Score</p>
-                      <div className="mt-2 text-3xl font-semibold text-[#171717]">{result.riskScore}<span className="text-lg text-[#6b7280]"> / 100</span></div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 h-2.5 rounded-full bg-[#e5e7eb]">
-                    <div
-                      className={`h-full rounded-full ${
-                        result.riskLevel === "LOW"
-                          ? "bg-emerald-600"
-                          : result.riskLevel === "MEDIUM"
-                            ? "bg-amber-500"
-                            : result.riskLevel === "HIGH"
-                              ? "bg-orange-600"
-                              : "bg-red-600"
-                      }`}
-                      style={{ width: `${result.riskScore}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-[#e5e7eb] bg-[#f8fafc] p-4">
-                  <p className="text-sm leading-6 text-[#374151]">{result.summary}</p>
-                </div>
-
-                <div>
-                  <div className="mb-3 flex items-center gap-2">
-                    <AlertTriangle size={18} className="text-[#374151]" />
-                    <h3 className="text-lg font-semibold text-[#171717]">Red flags</h3>
-                  </div>
-
-                  {result.redFlags.length === 0 ? (
-                    <div className="rounded-xl border border-[#e5e7eb] bg-[#f8fafc] p-4 text-sm text-[#6b7280]">
-                      No red flags were identified in the submitted content.
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {result.redFlags.map((flag) => (
-                        <article key={flag.type} className="rounded-2xl border border-[#e5e7eb] bg-white p-4">
-                          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <h4 className="text-base font-semibold text-[#171717]">{flag.title}</h4>
-                            <span className={`inline-flex w-fit items-center rounded-full border px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.08em] ${severityMeta[flag.severity]}`}>
-                              {flag.severity}
-                            </span>
-                          </div>
-
-                          <div className="mt-4 space-y-3">
-                            <div>
-                              <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#6b7280]">Evidence</p>
-                              <p className="mt-1 text-sm leading-6 text-[#171717]">“{flag.evidence}”</p>
-                            </div>
-                            <div>
-                              <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#6b7280]">Why it matters</p>
-                              <p className="mt-1 text-sm leading-6 text-[#374151]">{flag.explanation}</p>
-                            </div>
-                          </div>
-                        </article>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="rounded-2xl border border-[#e5e7eb] bg-white p-4">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={18} className="text-[#2563eb]" />
-                    <h3 className="text-lg font-semibold text-[#171717]">Recommendations</h3>
-                  </div>
-                  {result.recommendations && result.recommendations.length > 1 ? (
-                    <ul className="mt-3 space-y-2 text-sm leading-6 text-[#374151]">
-                      {result.recommendations.map((rec, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
-                          <span>{rec}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-3 text-sm leading-6 text-[#374151]">{result.recommendation}</p>
-                  )}
-                </div>
-
-                {result.limitations && result.limitations.length > 0 && (
-                  <div className="rounded-xl border border-[#e5e7eb] bg-[#f8fafc] p-3.5 text-xs leading-5 text-[#6b7280]">
-                    <span className="font-medium text-[#4b5563]">Catatan Analitis: </span>
-                    {result.limitations.join(" ")}
-                  </div>
-                )}
-              </div>
-            )}
-          </aside>
+          <section className="min-w-0 lg:border-l lg:border-[#d1d5db] lg:pl-6">
+            <div className="mb-5 border-b border-[#9ca3af] pb-3"><p className="mono-data text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2563eb]">02 / ASSESSMENT OUTPUT</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Risk assessment</h2><p className="mt-1 text-sm text-[#4b5563]">A concise view of the evidence, indicators, and recommended action.</p></div>
+            {!result && !loading && !error && <div className="border border-dashed border-[#9ca3af] bg-white px-6 py-12 text-center"><ShieldAlert size={25} className="mx-auto text-[#2563eb]" /><h3 className="mt-4 text-base font-semibold">No assessment yet</h3><p className="mx-auto mt-2 max-w-sm text-sm text-[#6b7280]">Submit evidence to generate a structured risk assessment.</p></div>}
+            {loading && <div className="border border-[#9ca3af] bg-white p-6"><div className="flex items-center gap-3"><span className="h-2 w-2 animate-pulse bg-[#2563eb]" /><span className="mono-data text-xs uppercase tracking-wide">Processing evidence</span></div><div className="mt-5 space-y-2"><div className="h-2 w-full animate-pulse bg-[#e5e7eb]" /><div className="h-2 w-4/5 animate-pulse bg-[#e5e7eb]" /><div className="h-2 w-3/5 animate-pulse bg-[#e5e7eb]" /></div></div>}
+            {result && <div className="space-y-5">
+              <div className={`border-l-4 border-t border-r border-b p-5 ${resultToneClass}`}><div className="flex items-start justify-between gap-4"><div><p className="mono-data text-[10px] font-semibold uppercase tracking-[0.14em]">Risk level</p><h3 className={`mt-1 text-3xl font-bold uppercase tracking-tight ${riskMeta[result.riskLevel].color}`}>{riskMeta[result.riskLevel].label}</h3></div><div className="text-right"><p className="mono-data text-[10px] font-semibold uppercase tracking-[0.14em] text-[#4b5563]">Score</p><p className="mono-data mt-1 text-3xl font-semibold">{result.riskScore}<span className="text-base text-[#6b7280]"> / 100</span></p></div></div><div className="mt-5"><div className="relative h-1 bg-[#d1d5db]"><div className={`h-1 ${riskMeta[result.riskLevel].bar}`} style={{ width: `${result.riskScore}%` }} /><span className="absolute -top-1.5 h-4 w-px bg-[#111827]" style={{ left: `${result.riskScore}%` }} /></div><div className="mt-2 flex justify-between mono-data text-[9px] text-[#4b5563]"><span>0 LOW</span><span>25 MEDIUM</span><span>50 HIGH</span><span>75 CRITICAL</span><span>100</span></div></div></div>
+              <div className="border-b border-[#9ca3af] pb-4"><p className="mono-data text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6b7280]">Assessment summary</p><p className="mt-2 text-base font-medium leading-7 text-[#111827]">{result.summary}</p></div>
+              <div><div className="mb-3 flex items-center gap-2"><AlertTriangle size={16} className="text-red-700" /><h3 className="text-sm font-semibold uppercase tracking-wide">Top risk factors</h3></div>{result.redFlags.length === 0 ? <p className="border border-[#9ca3af] bg-white p-4 text-sm text-[#4b5563]">No red flags were identified in the submitted content.</p> : <div className="divide-y divide-[#d1d5db] border-y border-[#9ca3af]">{result.redFlags.map((flag) => <article key={flag.type} className="grid gap-2 py-4 sm:grid-cols-[92px_1fr]"><span className={`h-fit w-fit border px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${severityMeta[flag.severity]}`}>{flag.severity}</span><div><h4 className="font-semibold">{flag.title}</h4><p className="mt-1 text-sm text-[#111827]">&quot;{flag.evidence}&quot;</p><p className="mt-2 text-sm leading-6 text-[#4b5563]">{flag.explanation}</p></div></article>)}</div>}</div>
+              <div><div className="mb-3 flex items-center gap-2"><CheckCircle2 size={16} className="text-green-700" /><h3 className="text-sm font-semibold uppercase tracking-wide">Recommended action</h3></div><div className="border-l-4 border-green-600 bg-white p-4 text-sm leading-6 text-[#111827]">{result.recommendations && result.recommendations.length > 1 ? <ul className="space-y-2">{result.recommendations.map((rec, idx) => <li key={idx} className="flex gap-2"><span className="text-green-700">{idx + 1}.</span><span>{rec}</span></li>)}</ul> : result.recommendation}</div></div>
+              {result.verification && <div><h3 className="mb-3 text-sm font-semibold uppercase tracking-wide">Evidence verification</h3><div className="divide-y divide-[#e5e7eb] border-y border-[#9ca3af] bg-white text-sm">{Object.entries(result.verification).map(([key, value]) => <div key={key} className="flex items-start justify-between gap-4 py-3"><span className="font-medium capitalize text-[#374151]">{key.replaceAll("_", " ")}</span><span className="max-w-[65%] text-right text-[#111827]">{typeof value === "object" && value !== null ? String((value as { status?: string; reachable?: boolean; found?: boolean }).status ?? ((value as { reachable?: boolean }).reachable === true ? "Reachable" : (value as { found?: boolean }).found === false ? "Not found" : "Recorded")) : String(value)}</span></div>)}</div></div>}
+              {result.limitations && result.limitations.length > 0 && <p className="border-t border-[#d1d5db] pt-3 text-xs leading-5 text-[#6b7280]">{result.limitations.join(" ")}</p>}
+            </div>}
+          </section>
         </div>
+        <footer className="border-t border-[#9ca3af] pt-3 text-[10px] uppercase tracking-[0.12em] text-[#6b7280]">PIGAL · Evidence-based financial risk assessment · Not a legal determination</footer>
       </div>
     </main>
   );
